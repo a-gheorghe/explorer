@@ -1,0 +1,15 @@
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure Panel from react-resizable-panels has proper height */
+[data-panel-group] {
+  height: 100%;
+}
+
+[data-panel] {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
