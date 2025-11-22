@@ -37,9 +37,11 @@ const MapClickHandler = ({
 }) => {
   useMapEvents({
     click(e: LeafletMouseEvent) {
+      // Use wrap() to ensure coordinates are in valid range (-180 to 180 for longitude)
+      const wrapped = e.latlng.wrap();
       setSelectedLocation({
-        latitude: e.latlng.lat,
-        longitude: e.latlng.lng,
+        latitude: wrapped.lat,
+        longitude: wrapped.lng,
       });
     },
   });
@@ -54,20 +56,8 @@ export const MapView = ({
   selectedLocation: SelectedLocation | undefined;
   setSelectedLocation: (location: SelectedLocation) => void;
 }) => {
-  // Default center is Oslo coordinates
-  const defaultCenter: [number, number] = [59.9139, 10.7522];
-
   return (
-    <MapContainer
-      center={
-        selectedLocation
-          ? [selectedLocation.latitude, selectedLocation.longitude]
-          : defaultCenter
-      }
-      zoom={2}
-      className="map-container"
-      minZoom={2}
-    >
+    <MapContainer center={[0, 0]} zoom={3} minZoom={2}>
       <MapResizeHandler />
       <MapClickHandler setSelectedLocation={setSelectedLocation} />
       {selectedLocation && (

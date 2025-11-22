@@ -5,25 +5,30 @@ import { PageContainer } from './elements';
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import type { SelectedLocation } from './types';
 import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>();
   return (
-    <PageContainer>
-      <PanelGroup direction="horizontal">
-        <Panel defaultSize={25}>
-          <Sidebar selectedLocation={selectedLocation} />
-        </Panel>
-        <PanelResizeHandle />
+    <QueryClientProvider client={queryClient}>
+      <PageContainer>
+        <PanelGroup direction="horizontal">
+          <Panel defaultSize={25}>
+            <Sidebar selectedLocation={selectedLocation} />
+          </Panel>
+          <PanelResizeHandle />
 
-        <Panel>
-          <MapView
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-          />
-        </Panel>
-      </PanelGroup>
-    </PageContainer>
+          <Panel>
+            <MapView
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+            />
+          </Panel>
+        </PanelGroup>
+      </PageContainer>
+    </QueryClientProvider>
   );
 }
 
