@@ -11,6 +11,7 @@ const queryClient = new QueryClient();
 
 function App() {
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>();
+
   return (
     <QueryClientProvider client={queryClient}>
       <PageContainer>
