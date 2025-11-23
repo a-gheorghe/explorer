@@ -9,6 +9,32 @@ import {
   useCountryCode,
   useCountryFromCoordinates,
 } from './tiles/useCountryFromCoordinates';
+import styled from 'styled-components';
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #374151;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 300px;
+  }
+`;
 
 export const Sidebar = ({ coordinates }: { coordinates?: Coordinates }) => {
   const { data: country } = useCountryFromCoordinates(
@@ -33,7 +59,13 @@ export const Sidebar = ({ coordinates }: { coordinates?: Coordinates }) => {
   if (!coordinates)
     return (
       <SidebarContainer>
-        Click anywhere on the map to explore the location!
+        <EmptyState>
+          <h2>Explore the World</h2>
+          <p>
+            Click anywhere on the map to discover information about that
+            location, including country details and wildlife observations.
+          </p>
+        </EmptyState>
       </SidebarContainer>
     );
   return (

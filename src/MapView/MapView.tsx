@@ -65,8 +65,19 @@ export const MapView = ({
       {coordinates && (
         <Marker position={[coordinates.latitude, coordinates.longitude]}>
           <Popup>
-            Selected location: {coordinates.latitude.toFixed(4)},
-            {coordinates.longitude.toFixed(4)}
+            <div
+              style={{
+                padding: '4px 0',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontSize: '0.875rem',
+                color: '#374151',
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: '4px' }}>
+                {coordinates.latitude.toFixed(6)},{' '}
+                {coordinates.longitude.toFixed(6)}
+              </div>
+            </div>
           </Popup>
         </Marker>
       )}

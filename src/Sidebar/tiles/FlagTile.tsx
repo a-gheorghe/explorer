@@ -1,15 +1,28 @@
 import { memo } from 'react';
 import { Tile, TileContent, TileTitle } from '../elements';
+import styled from 'styled-components';
 
-// React by default does a shallow comparison of props to check if this should be re-rendered
-// In our case, we are just comparing a string, so we don't need any check beyond the default
-const FlagImage = memo(({ countryCode }: { countryCode: string }) => {
-  return (
-    <img
-      src={`https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png`}
-    />
-  );
-});
+const FlagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+`;
+
+const StyledFlagImage = styled.img`
+  width: 80px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const FlagImage = memo(StyledFlagImage);
+FlagImage.displayName = 'FlagImage';
+
+const NoDataText = styled.div`
+  color: #9ca3af;
+  font-style: italic;
+`;
 
 export const FlagTile = memo(
   ({ countryCode }: { countryCode?: string }) => {
@@ -18,7 +31,16 @@ export const FlagTile = memo(
       <Tile>
         <TileTitle>Flag</TileTitle>
         <TileContent>
-          {countryCode ? <FlagImage countryCode={countryCode} /> : 'N/A'}
+          {countryCode ? (
+            <FlagContainer>
+              <FlagImage
+                src={`https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png`}
+                alt={`Flag of ${countryCode.toUpperCase()}`}
+              />
+            </FlagContainer>
+          ) : (
+            <NoDataText>N/A</NoDataText>
+          )}
         </TileContent>
       </Tile>
     );
