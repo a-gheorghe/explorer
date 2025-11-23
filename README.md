@@ -11,6 +11,11 @@ In this application, you can explore the world by clicking on the map. On each m
 
 You can click on each observation to see the first photo in larger resolution in a modal.
 
+## Screenrecording
+
+https://github.com/user-attachments/assets/7148791f-bb70-4b0f-9a4a-7e2f614e9c6f
+
+
 ## To Run Locally
 
 - clone repo
@@ -73,4 +78,7 @@ Although I use AI (Cursor, Claude, Gemini) all the time in my day-to-day work, I
 
 I did most of this in "Ask" mode, allowing me to do all the coding myself -- except the typescript autogeneration stuff and the CSS "make this pretty", Cursor did that for me directly.
 
+Before AI styling:
+<img width="1791" height="915" alt="Screenshot 2025-11-23 at 21 54 48" src="https://github.com/user-attachments/assets/d0d24c45-2c9f-49e9-80da-a2f15b779ec5" />
 
+After: see recording at the top of this description
