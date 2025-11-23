@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import type { ObservationResponse } from '../../types';
 
 export const createWildlifeQuery = (latitude?: number, longitude?: number) => {
@@ -12,6 +12,7 @@ export const createWildlifeQuery = (latitude?: number, longitude?: number) => {
       return data.results;
     },
     enabled: !!latitude && !!longitude,
+    placeholderData: keepPreviousData, // This allows us to keep the previous data until the new one comes in. For the flag, this means that we can use memo to prevent unnecessary re-rendering
   };
 };
 

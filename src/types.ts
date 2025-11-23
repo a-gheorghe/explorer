@@ -159,3 +159,5 @@ export type ObservationResponse = {
   per_page: number;
   results: WildlifeObservation[];
 };
+
+export type Coordinates = { latitude: number; longitude: number };

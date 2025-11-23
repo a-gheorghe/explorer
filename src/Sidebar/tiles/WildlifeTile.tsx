@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { SelectedLocation, WildlifeObservation } from '../../types';
+import type { WildlifeObservation } from '../../types';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 
@@ -18,9 +18,9 @@ const getHighResolutionPhotoUrl = (url: string, size: string) => {
 };
 
 export const WildlifeTile = ({
-  selectedLocation,
+  observations,
 }: {
-  selectedLocation: SelectedLocation | undefined;
+  observations?: WildlifeObservation[];
 }) => {
   console.log('rendering wildlife tile');
   const [selectedWildlifeObservation, setSelectedWildlifeObservation] =
@@ -28,10 +28,10 @@ export const WildlifeTile = ({
   return (
     <>
       <div>Recent wildlife sightings</div>
-      {selectedLocation?.wildlifeObservations && (
+      {observations && (
         <div>
           {/* TODO: Show this is a nicer way (indicate their are multiple photos per observation, list observations in a more appealing way) */}
-          {selectedLocation?.wildlifeObservations?.map(observation => (
+          {observations?.map(observation => (
             <ObservationTile key={observation.id}>
               {/* TODO make this button nicer, use a pointer cursor, hover effect */}
               <div> Observed on {observation.observed_on_string}</div>

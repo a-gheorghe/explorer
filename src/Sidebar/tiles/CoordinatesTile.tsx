@@ -1,17 +1,17 @@
-import type { SelectedLocation } from '../../types';
+import type { Coordinates } from '../../types';
 import { Tile, TileContent, TileTitle } from '../elements';
 
 export const CoordinatesTile = ({
-  selectedLocation,
+  coordinates,
 }: {
-  selectedLocation: SelectedLocation | undefined;
+  coordinates?: Coordinates;
 }) => {
   console.log('rendering coordinates tile');
   return (
     <Tile>
       <TileTitle>Coordinates</TileTitle>
       <TileContent>
-        {selectedLocation?.latitude}, {selectedLocation?.longitude}
+        {coordinates?.latitude}, {coordinates?.longitude}
       </TileContent>
     </Tile>
   );

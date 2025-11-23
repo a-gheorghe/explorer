@@ -27,7 +27,6 @@ export const useCountryFromCoordinates = (
   const { error, data, isLoading } = useQuery(
     createCountryQuery(latitude, longitude)
   );
-  console.log('data is', data);
   return { isLoading, error, data };
 };
 

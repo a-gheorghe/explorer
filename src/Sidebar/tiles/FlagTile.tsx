@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import type { SelectedLocation } from '../../types';
 import { Tile, TileContent, TileTitle } from '../elements';
 
 // React by default does a shallow comparison of props to check if this should be re-rendered
@@ -12,19 +11,20 @@ const FlagImage = memo(({ countryCode }: { countryCode: string }) => {
   );
 });
 
-export const FlagTile = ({
-  selectedLocation,
-}: {
-  selectedLocation: SelectedLocation | undefined;
-}) => {
-  console.log('rendering flag tile');
-  const countryCode = selectedLocation?.country?.code;
-  return (
-    <Tile>
-      <TileTitle>Flag</TileTitle>
-      <TileContent>
-        {countryCode ? <FlagImage countryCode={countryCode} /> : 'N/A'}
-      </TileContent>
-    </Tile>
-  );
-};
+export const FlagTile = memo(
+  ({ countryCode }: { countryCode?: string }) => {
+    console.log('rendering flag tile');
+    return (
+      <Tile>
+        <TileTitle>Flag</TileTitle>
+        <TileContent>
+          {countryCode ? <FlagImage countryCode={countryCode} /> : 'N/A'}
+        </TileContent>
+      </Tile>
+    );
+  },
+  (prevProps, nextProps) => {
+    // Only rerender if the country code value actually changes
+    return prevProps.countryCode === nextProps.countryCode;
+  }
+);
