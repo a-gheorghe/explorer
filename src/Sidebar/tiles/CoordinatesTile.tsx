@@ -1,13 +1,18 @@
 import type { SelectedLocation } from '../../types';
+import { Tile, TileContent, TileTitle } from '../elements';
 
 export const CoordinatesTile = ({
   selectedLocation,
 }: {
   selectedLocation: SelectedLocation | undefined;
 }) => {
+  console.log('rendering coordinates tile');
   return (
-    <div>
-      Coordinates: {selectedLocation?.latitude}, {selectedLocation?.longitude}
-    </div>
+    <Tile>
+      <TileTitle>Coordinates</TileTitle>
+      <TileContent>
+        {selectedLocation?.latitude}, {selectedLocation?.longitude}
+      </TileContent>
+    </Tile>
   );
 };

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import type { SelectedLocation } from '../../types';
-import { useCountryCode } from './useCountryFromCoordinates';
+import { Tile, TileContent, TileTitle } from '../elements';
 
 // React by default does a shallow comparison of props to check if this should be re-rendered
 // In our case, we are just comparing a string, so we don't need any check beyond the default
@@ -17,11 +17,14 @@ export const FlagTile = ({
 }: {
   selectedLocation: SelectedLocation | undefined;
 }) => {
-  const { data: countryCode } = useCountryCode(
-    selectedLocation?.latitude,
-    selectedLocation?.longitude
+  console.log('rendering flag tile');
+  const countryCode = selectedLocation?.country?.code;
+  return (
+    <Tile>
+      <TileTitle>Flag</TileTitle>
+      <TileContent>
+        {countryCode ? <FlagImage countryCode={countryCode} /> : 'N/A'}
+      </TileContent>
+    </Tile>
   );
-
-  if (!countryCode) return null;
-  return <FlagImage countryCode={countryCode} />;
 };

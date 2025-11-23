@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-const createCountryQuery = (latitude?: number, longitude?: number) => {
+export const createCountryQuery = (latitude?: number, longitude?: number) => {
   return {
     queryKey: ['countryFromCoordinates', latitude, longitude],
     queryFn: async () => {
@@ -16,6 +16,7 @@ const createCountryQuery = (latitude?: number, longitude?: number) => {
     staleTime: 1000 * 60 * 60 * 24 * 30, // 30 days - countries don't change often
     refetchOnMount: false, // Don't refetch if we have cached data
     placeholderData: keepPreviousData, // This allows us to keep the previous data until the new one comes in. For the flag, this means that we can use memo to prevent unnecessary re-rendering
+    retry: false,
   };
 };
 

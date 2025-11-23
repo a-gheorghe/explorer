@@ -11,6 +11,12 @@ export const Sidebar = ({
   selectedLocation: SelectedLocation | undefined;
 }) => {
   console.log('rendering sidebar');
+  if (!selectedLocation)
+    return (
+      <SidebarContainer>
+        Click anywhere on the map to explore the location!
+      </SidebarContainer>
+    );
   return (
     <SidebarContainer>
       <CoordinatesTile selectedLocation={selectedLocation} />

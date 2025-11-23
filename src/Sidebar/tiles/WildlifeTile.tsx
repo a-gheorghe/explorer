@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import type { SelectedLocation, WildlifeObservation } from '../../types';
-import { useWildlifeFromCoordinates } from './useWildlifeFromCoordinates';
 import Modal from 'react-modal';
+import styled from 'styled-components';
+
+const ObservationTile = styled.div`
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+`;
 
 const getHighResolutionPhotoUrl = (url: string, size: string) => {
   return url.replace(
@@ -15,30 +22,35 @@ export const WildlifeTile = ({
 }: {
   selectedLocation: SelectedLocation | undefined;
 }) => {
-  const { data: wildlifeObservations } = useWildlifeFromCoordinates(
-    selectedLocation?.latitude,
-    selectedLocation?.longitude
-  );
+  console.log('rendering wildlife tile');
   const [selectedWildlifeObservation, setSelectedWildlifeObservation] =
     useState<WildlifeObservation>();
   return (
     <>
-      <div>Wildlife</div>
-      {wildlifeObservations && (
+      <div>Recent wildlife sightings</div>
+      {selectedLocation?.wildlifeObservations && (
         <div>
           {/* TODO: Show this is a nicer way (indicate their are multiple photos per observation, list observations in a more appealing way) */}
-          {wildlifeObservations.map(observation => (
-            <div key={observation.id}>
+          {selectedLocation?.wildlifeObservations?.map(observation => (
+            <ObservationTile key={observation.id}>
               {/* TODO make this button nicer, use a pointer cursor, hover effect */}
+              <div> Observed on {observation.observed_on_string}</div>
               <button
                 onClick={() => setSelectedWildlifeObservation(observation)}
               >
-                <img
-                  src={observation.photos[0].url}
-                  alt={`Thumbnail photo of ${observation.species_guess}`}
-                />
+                See observation photos{' '}
               </button>
-            </div>
+              <div>
+                {observation.photos.map(photo => {
+                  return (
+                    <img
+                      src={photo.url}
+                      alt={`Thumbnail photo of ${observation.species_guess}`}
+                    />
+                  );
+                })}
+              </div>
+            </ObservationTile>
           ))}
         </div>
       )}
@@ -70,19 +82,21 @@ export const WildlifeTile = ({
           },
         }}
       >
-        <div>{selectedWildlifeObservation?.species_guess}</div>
-        <div>
+        <button onClick={() => setSelectedWildlifeObservation(undefined)}>
+          Close
+        </button>
+        {selectedWildlifeObservation && (
           <img
             // TODO handle empty string
             // TODO show all photos associated with an observation
             // TODO handle loading state of photo better (text loads and then photo after a while)
             src={getHighResolutionPhotoUrl(
-              selectedWildlifeObservation?.photos[0].url || '',
+              selectedWildlifeObservation.photos[0].url || '',
               'medium'
             )}
-            alt={`Full photo of ${selectedWildlifeObservation?.species_guess}`}
+            alt={`Full photo of ${selectedWildlifeObservation.species_guess}`}
           />
-        </div>
+        )}
       </Modal>
     </>
   );

@@ -1,20 +1,18 @@
 import type { SelectedLocation } from '../../types';
-import { useCountryFromCoordinates } from './useCountryFromCoordinates';
+import { Tile, TileContent, TileTitle } from '../elements';
 
 export const CountryTile = ({
   selectedLocation,
 }: {
   selectedLocation: SelectedLocation | undefined;
 }) => {
-  const {
-    error,
-    data: country,
-    isLoading,
-  } = useCountryFromCoordinates(
-    selectedLocation?.latitude,
-    selectedLocation?.longitude
+  console.log('rendering country tile');
+  return (
+    <Tile>
+      <TileTitle>Country</TileTitle>
+      <TileContent>
+        {selectedLocation?.country ? selectedLocation?.country?.name : 'N/A'}
+      </TileContent>
+    </Tile>
   );
-  if (error) return <div> Something went wrong</div>;
-  if (isLoading) return <div> Loading...</div>;
-  return <div>{country?.name}</div>;
 };

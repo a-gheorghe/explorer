@@ -10,6 +10,9 @@ import {
 import './MapView.css';
 import type { SelectedLocation } from '../types';
 import type { LeafletMouseEvent } from 'leaflet';
+import { useQueryClient } from '@tanstack/react-query';
+import { createCountryQuery } from '../Sidebar/tiles/useCountryFromCoordinates';
+import { createWildlifeQuery } from '../Sidebar/tiles/useWildlifeFromCoordinates';
 
 // Handle map resize when container size changes (needed for resizable panels)
 const MapResizeHandler = () => {
@@ -35,13 +38,37 @@ const MapClickHandler = ({
 }: {
   setSelectedLocation: (location: SelectedLocation) => void;
 }) => {
+  const queryClient = useQueryClient();
+
   useMapEvents({
-    click(e: LeafletMouseEvent) {
+    async click(e: LeafletMouseEvent) {
       // Use wrap() to ensure coordinates are in valid range (-180 to 180 for longitude)
+      // TODO investigate the zoom/centering logic to understand why we get huge coordinate numbers
       const wrapped = e.latlng.wrap();
+
+      const [countryPromise, wildlifePromise] = await Promise.allSettled([
+        queryClient.fetchQuery(createCountryQuery(wrapped.lat, wrapped.lng)),
+        queryClient.fetchQuery(createWildlifeQuery(wrapped.lat, wrapped.lng)),
+      ]);
+      const country =
+        countryPromise.status === 'fulfilled'
+          ? countryPromise.value
+          : undefined;
+      const wildlifeObservations =
+        wildlifePromise.status === 'fulfilled'
+          ? wildlifePromise.value
+          : undefined;
+
       setSelectedLocation({
         latitude: wrapped.lat,
         longitude: wrapped.lng,
+        country: country
+          ? {
+              name: country.name,
+              code: country.code,
+            }
+          : undefined,
+        wildlifeObservations,
       });
     },
   });
@@ -56,6 +83,7 @@ export const MapView = ({
   selectedLocation: SelectedLocation | undefined;
   setSelectedLocation: (location: SelectedLocation) => void;
 }) => {
+  console.log('selectedLocation is', selectedLocation);
   return (
     <MapContainer center={[0, 0]} zoom={3} minZoom={2}>
       <MapResizeHandler />
