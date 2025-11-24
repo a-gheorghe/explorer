@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Tile, TileContent, TileTitle } from '../elements';
 import styled from 'styled-components';
 
@@ -16,37 +15,28 @@ const StyledFlagImage = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const FlagImage = memo(StyledFlagImage);
-FlagImage.displayName = 'FlagImage';
-
 const NoDataText = styled.div`
   color: #9ca3af;
   font-style: italic;
 `;
 
-export const FlagTile = memo(
-  ({ countryCode }: { countryCode?: string }) => {
-    console.log('rendering flag tile');
-    return (
-      <Tile>
-        <TileTitle>Flag</TileTitle>
-        <TileContent>
-          {countryCode ? (
-            <FlagContainer>
-              <FlagImage
-                src={`https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png`}
-                alt={`Flag of ${countryCode.toUpperCase()}`}
-              />
-            </FlagContainer>
-          ) : (
-            <NoDataText>N/A</NoDataText>
-          )}
-        </TileContent>
-      </Tile>
-    );
-  },
-  (prevProps, nextProps) => {
-    // Only rerender if the country code value actually changes
-    return prevProps.countryCode === nextProps.countryCode;
-  }
-);
+export const FlagTile = ({ countryCode }: { countryCode?: string }) => {
+  console.log('rendering flag tile');
+  return (
+    <Tile>
+      <TileTitle>Flag</TileTitle>
+      <TileContent>
+        {countryCode ? (
+          <FlagContainer>
+            <StyledFlagImage
+              src={`https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png`}
+              alt={`Flag of ${countryCode.toUpperCase()}`}
+            />
+          </FlagContainer>
+        ) : (
+          <NoDataText>N/A</NoDataText>
+        )}
+      </TileContent>
+    </Tile>
+  );
+};
