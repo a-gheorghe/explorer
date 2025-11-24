@@ -40,7 +40,8 @@ describe('useCountryFromCoordinates', () => {
     const wrapper = createWrapper(queryClient);
     const mockResponse: Partial<Response> = {
       ok: true,
-      json: async () => Promise.resolve({ address: { country: 'Norway' } }),
+      json: async () =>
+        Promise.resolve({ address: { country: 'Norway', country_code: 'no' } }),
     };
 
     fetchSpy.mockResolvedValueOnce(mockResponse);
@@ -54,13 +55,14 @@ describe('useCountryFromCoordinates', () => {
     expect(fetchSpy).toHaveBeenCalledWith(
       expect.stringContaining('lat=20.123456&lon=50.123456')
     );
-    expect(result.current.data).toBe('Norway');
+    expect(result.current.data).toStrictEqual({ name: 'Norway', code: 'no' });
   });
   it('should not fetch the country again if the coordinates are the same', async () => {
     const wrapper = createWrapper(queryClient);
     const mockResponse: Partial<Response> = {
       ok: true,
-      json: async () => Promise.resolve({ address: { country: 'Norway' } }),
+      json: async () =>
+        Promise.resolve({ address: { country: 'Norway', country_code: 'no' } }),
     };
 
     fetchSpy.mockResolvedValueOnce(mockResponse);
@@ -73,21 +75,22 @@ describe('useCountryFromCoordinates', () => {
     expect(fetchSpy).toHaveBeenCalledWith(
       expect.stringContaining('lat=20.123456&lon=50.123456')
     );
-    expect(result.current.data).toBe('Norway');
+    expect(result.current.data).toStrictEqual({ name: 'Norway', code: 'no' });
 
     const { result: result2 } = renderHook(
       () => useCountryFromCoordinates(20.123456, 50.123456),
       { wrapper }
     );
     expect(result2.current.isLoading).toBe(false);
-    expect(result2.current.data).toBe('Norway');
+    expect(result2.current.data).toStrictEqual({ name: 'Norway', code: 'no' });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
   it('should do a new fetch if the coordinates are different even if the country is the same', async () => {
     const wrapper = createWrapper(queryClient);
     const mockResponse: Partial<Response> = {
       ok: true,
-      json: async () => Promise.resolve({ address: { country: 'Norway' } }),
+      json: async () =>
+        Promise.resolve({ address: { country: 'Norway', country_code: 'no' } }),
     };
 
     fetchSpy.mockResolvedValueOnce(mockResponse);
@@ -101,7 +104,7 @@ describe('useCountryFromCoordinates', () => {
     expect(fetchSpy).toHaveBeenCalledWith(
       expect.stringContaining('lat=20.123456&lon=50.123456')
     );
-    expect(result.current.data).toBe('Norway');
+    expect(result.current.data).toStrictEqual({ name: 'Norway', code: 'no' });
 
     const { result: result2 } = renderHook(
       () => useCountryFromCoordinates(30.123456, 60.123456),
@@ -110,7 +113,7 @@ describe('useCountryFromCoordinates', () => {
     expect(result2.current.isLoading).toBe(true);
     await waitFor(() => expect(result2.current.isLoading).toBe(false));
 
-    expect(result2.current.data).toBe('Norway');
+    expect(result2.current.data).toStrictEqual({ name: 'Norway', code: 'no' });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 });
